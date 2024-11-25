@@ -7,7 +7,10 @@ import org.psionicgeek.uber_backend.entities.enums.RideStatus;
 import org.psionicgeek.uber_backend.services.RideService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class RideServiceImpl implements RideService {
     @Override
     public Ride getRideById(Long id) {

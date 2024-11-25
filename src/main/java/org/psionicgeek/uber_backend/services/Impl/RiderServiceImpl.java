@@ -5,9 +5,11 @@ import org.psionicgeek.uber_backend.dto.RideDto;
 import org.psionicgeek.uber_backend.dto.RideRequestDto;
 import org.psionicgeek.uber_backend.dto.RiderDto;
 import org.psionicgeek.uber_backend.services.RiderService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RiderServiceImpl implements RiderService {
     @Override
     public RideRequestDto requestRide(RideRequestDto rideRequestDto) {

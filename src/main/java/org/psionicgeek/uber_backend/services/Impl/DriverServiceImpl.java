@@ -4,9 +4,12 @@ import org.psionicgeek.uber_backend.dto.DriverDto;
 import org.psionicgeek.uber_backend.dto.RideDto;
 import org.psionicgeek.uber_backend.dto.RiderDto;
 import org.psionicgeek.uber_backend.services.DriverService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+@Service
 public class DriverServiceImpl implements DriverService {
     @Override
     public RideDto acceptRide(Long rideId) {
