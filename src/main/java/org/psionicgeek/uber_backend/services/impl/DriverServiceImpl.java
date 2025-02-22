@@ -1,4 +1,4 @@
-package org.psionicgeek.uber_backend.services.Impl;
+package org.psionicgeek.uber_backend.services.impl;
 
 import org.psionicgeek.uber_backend.dto.DriverDto;
 import org.psionicgeek.uber_backend.dto.RideDto;

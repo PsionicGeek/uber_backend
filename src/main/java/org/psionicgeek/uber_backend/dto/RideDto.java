@@ -19,9 +19,9 @@ public class RideDto {
     private Long id;
 
 
-    private Point pickupLocation;
+    private PointDto pickupLocation;
 
-    private Point dropLocation;
+    private PointDto dropLocation;
 
 
     private LocalDateTime createdTime;
@@ -31,6 +31,8 @@ public class RideDto {
 
 
     private DriverDto driver;
+    private String rideDto;
+
 
 
     private PaymentMethod paymentMethod;

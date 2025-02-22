@@ -1,4 +1,4 @@
-package org.psionicgeek.uber_backend.services.Impl;
+package org.psionicgeek.uber_backend.services.impl;
 
 import org.locationtech.jts.geom.Point;
 import org.psionicgeek.uber_backend.services.DistanceService;
