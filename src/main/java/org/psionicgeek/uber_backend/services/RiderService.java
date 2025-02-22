@@ -4,6 +4,8 @@ import org.psionicgeek.uber_backend.dto.DriverDto;
 import org.psionicgeek.uber_backend.dto.RideDto;
 import org.psionicgeek.uber_backend.dto.RideRequestDto;
 import org.psionicgeek.uber_backend.dto.RiderDto;
+import org.psionicgeek.uber_backend.entities.Rider;
+import org.psionicgeek.uber_backend.entities.User;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ public interface RiderService {
 
 
     RideRequestDto requestRide(RideRequestDto rideRequestDto);
+
+    Rider createRider(User user);
 
     RideDto cancelRide(Long rideId);
 

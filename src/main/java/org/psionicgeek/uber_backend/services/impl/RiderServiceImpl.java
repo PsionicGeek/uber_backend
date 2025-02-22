@@ -8,8 +8,11 @@ import org.psionicgeek.uber_backend.dto.RideDto;
 import org.psionicgeek.uber_backend.dto.RideRequestDto;
 import org.psionicgeek.uber_backend.dto.RiderDto;
 import org.psionicgeek.uber_backend.entities.RideRequest;
+import org.psionicgeek.uber_backend.entities.Rider;
+import org.psionicgeek.uber_backend.entities.User;
 import org.psionicgeek.uber_backend.entities.enums.RideRequestStatus;
 import org.psionicgeek.uber_backend.repositories.RideRequestRepository;
+import org.psionicgeek.uber_backend.repositories.RiderRepository;
 import org.psionicgeek.uber_backend.services.RiderService;
 import org.psionicgeek.uber_backend.strategies.DriverMatchingStrategy;
 import org.psionicgeek.uber_backend.strategies.RideFareCalculationStrategy;
@@ -27,6 +30,8 @@ public class RiderServiceImpl implements RiderService {
     private final DriverMatchingStrategy driverMatchingStrategy;
     private final RideRequestRepository rideRequestRepository;
 
+    private final RiderRepository riderRepository;
+
     @Override
     public RideRequestDto requestRide(RideRequestDto rideRequestDto) {
         RideRequest rideRequest= modelMapper.map(rideRequestDto,RideRequest.class);
@@ -40,6 +45,16 @@ public class RiderServiceImpl implements RiderService {
         driverMatchingStrategy.findMatchingDrivers(rideRequest);
 
         return modelMapper.map(savedRideRequest, RideRequestDto.class);
+    }
+
+    @Override
+    public Rider createRider(User user) {
+        Rider rider = Rider.builder()
+                .user(user)
+                .rating(0.0).build();
+
+
+        return riderRepository.save(rider);
     }
 
     @Override
