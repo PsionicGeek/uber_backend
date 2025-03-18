@@ -1,11 +1,9 @@
 package org.psionicgeek.uber_backend.dto;
 
 
-
-import lombok.*;
-import org.locationtech.jts.geom.Point;
-
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.psionicgeek.uber_backend.entities.enums.PaymentMethod;
 import org.psionicgeek.uber_backend.entities.enums.RideStatus;
 

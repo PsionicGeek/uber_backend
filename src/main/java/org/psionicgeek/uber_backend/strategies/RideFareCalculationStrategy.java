@@ -1,7 +1,6 @@
 package org.psionicgeek.uber_backend.strategies;
 
 
-import org.psionicgeek.uber_backend.dto.RideRequestDto;
 import org.psionicgeek.uber_backend.entities.RideRequest;
 
 public interface RideFareCalculationStrategy {

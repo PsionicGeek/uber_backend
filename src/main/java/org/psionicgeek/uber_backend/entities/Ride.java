@@ -2,12 +2,13 @@ package org.psionicgeek.uber_backend.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.locationtech.jts.geom.Point;
 import org.psionicgeek.uber_backend.entities.enums.PaymentMethod;
-import org.psionicgeek.uber_backend.entities.enums.RideRequestStatus;
 import org.psionicgeek.uber_backend.entities.enums.RideStatus;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +46,5 @@ public class Ride {
     private Double fare;
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
+    private String otp;
 }

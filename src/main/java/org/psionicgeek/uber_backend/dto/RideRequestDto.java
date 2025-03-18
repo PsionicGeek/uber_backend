@@ -4,9 +4,6 @@ package org.psionicgeek.uber_backend.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.locationtech.jts.geom.Point;
-import org.psionicgeek.uber_backend.entities.Rider;
 import org.psionicgeek.uber_backend.entities.enums.PaymentMethod;
 import org.psionicgeek.uber_backend.entities.enums.RideRequestStatus;
 
@@ -26,6 +23,7 @@ public class RideRequestDto {
     private PointDto dropLocation;
 
 
+
     private LocalDateTime requestedTime;
 
 
@@ -33,6 +31,7 @@ public class RideRequestDto {
 
 
     private PaymentMethod paymentMethod;
+    private Double fare;
 
 
     private RideRequestStatus rideRequestStatus;

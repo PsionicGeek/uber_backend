@@ -6,8 +6,8 @@ import org.psionicgeek.uber_backend.dto.RideRequestDto;
 import org.psionicgeek.uber_backend.dto.RiderDto;
 import org.psionicgeek.uber_backend.entities.Rider;
 import org.psionicgeek.uber_backend.entities.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface RiderService {
 
@@ -23,5 +23,7 @@ public interface RiderService {
 
     RiderDto getMyProfile();
 
-    List<RideDto> getAllMyRides();
+    Page<RideDto> getAllMyRides(PageRequest pageRequest);
+
+    Rider getCurrentRider();
 }

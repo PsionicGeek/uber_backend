@@ -1,14 +1,19 @@
 package org.psionicgeek.uber_backend.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.psionicgeek.uber_backend.entities.enums.PaymentMethod;
 import org.psionicgeek.uber_backend.entities.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 public class Payment {
 
     @Id

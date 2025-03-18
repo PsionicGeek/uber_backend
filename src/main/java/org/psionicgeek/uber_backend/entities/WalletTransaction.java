@@ -1,13 +1,19 @@
 package org.psionicgeek.uber_backend.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.psionicgeek.uber_backend.entities.enums.TransactionMethod;
 import org.psionicgeek.uber_backend.entities.enums.TransactionType;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 public class WalletTransaction {
 
     @Id
