@@ -13,11 +13,13 @@ import org.psionicgeek.uber_backend.entities.enums.RideStatus;
 import org.psionicgeek.uber_backend.repositories.RideRequestRepository;
 import org.psionicgeek.uber_backend.repositories.RiderRepository;
 import org.psionicgeek.uber_backend.services.DriverService;
+import org.psionicgeek.uber_backend.services.RatingService;
 import org.psionicgeek.uber_backend.services.RideService;
 import org.psionicgeek.uber_backend.services.RiderService;
 import org.psionicgeek.uber_backend.strategies.RideStrategyManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class RiderServiceImpl implements RiderService {
     private final RiderRepository riderRepository;
     private final RideService rideService;
     private final DriverService driverService;
+    private final RatingService ratingService;
 
     @Override
     public RideRequestDto requestRide(RideRequestDto rideRequestDto) {
@@ -85,7 +88,19 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public DriverDto rateDriver(Long rideId, Integer rating) {
-        return null;
+
+        Rider rider = getCurrentRider();
+        Ride ride = rideService.getRideById(rideId);
+        if(!Objects.equals(rider.getId(), ride.getRider().getId())){
+            throw new RuntimeException("You are not authorized to rate this ride");
+        }
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException(
+                    "Ride status is not completed yet, status is: " +
+                            ride.getRideStatus()
+            );
+        }
+        return ratingService.rateDriver(ride, rating);
     }
 
     @Override
@@ -106,9 +121,10 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public Rider getCurrentRider() {
-        //TODO: Implementing Spring Security
-        return riderRepository.findById(1l).orElseThrow(
-                ()->new RuntimeException("Rider not found")
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return riderRepository.findByUser(user).orElseThrow(
+                ()->new RuntimeException("Rider not associated with this user: "+user.getEmail())
         );
     }
 }

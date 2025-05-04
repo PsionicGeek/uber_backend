@@ -8,16 +8,15 @@ import org.psionicgeek.uber_backend.dto.RiderDto;
 import org.psionicgeek.uber_backend.entities.Driver;
 import org.psionicgeek.uber_backend.entities.Ride;
 import org.psionicgeek.uber_backend.entities.RideRequest;
+import org.psionicgeek.uber_backend.entities.User;
 import org.psionicgeek.uber_backend.entities.enums.RideRequestStatus;
 import org.psionicgeek.uber_backend.entities.enums.RideStatus;
 import org.psionicgeek.uber_backend.exceptions.ResourceNotFoundException;
 import org.psionicgeek.uber_backend.repositories.DriverRepository;
-import org.psionicgeek.uber_backend.services.DriverService;
-import org.psionicgeek.uber_backend.services.PaymentService;
-import org.psionicgeek.uber_backend.services.RideRequestService;
-import org.psionicgeek.uber_backend.services.RideService;
+import org.psionicgeek.uber_backend.services.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +32,7 @@ public class DriverServiceImpl implements DriverService {
     private final RideService rideService;
     private final ModelMapper modelMapper;
     private final PaymentService paymentService;
+    private final RatingService ratingService;
 
     @Override
     @Transactional
@@ -103,6 +103,7 @@ public class DriverServiceImpl implements DriverService {
         }
         Ride savedRide = rideService.updateRideStatus(ride, RideStatus.ONGOING);
         paymentService.createNewPayment(savedRide);
+        ratingService.createNewRating(savedRide);
         return modelMapper.map(savedRide, RideDto.class);
     }
 
@@ -132,7 +133,23 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public RiderDto rateRider(Long rideId, Integer rating) {
-        return null;
+        Ride ride = rideService.getRideById(rideId);
+        Driver driver = getCurrentDriver();
+        if (!ride.getDriver().getId().equals(driver.getId())) {
+            throw new RuntimeException(
+                    "Driver is not authorized to start this ride"
+            );
+        }
+        if (!ride.getRideStatus().equals(RideStatus.ENDED)) {
+            throw new RuntimeException(
+                    "Ride status is not ENDED yet, status is: " +
+                            ride.getRideStatus()
+            );
+        }
+      return ratingService.rateRider(ride,  rating);
+
+
+
     }
 
     @Override
@@ -151,9 +168,10 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getCurrentDriver() {
-        return driverRepository.findById(2L).orElseThrow(
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return driverRepository.findByUser(user).orElseThrow(
                 () -> new ResourceNotFoundException(
-                        "Driver not found with id: " + 2L
+                        "Driver not associated with this user: " + user.getEmail()
                 )
         );
     }
@@ -161,6 +179,11 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public Driver updateDriverAvailability(Driver driver, Boolean available) {
         driver.setAvailable(available);
+        return driverRepository.save(driver);
+    }
+
+    @Override
+    public Driver createNewDriver(Driver driver) {
         return driverRepository.save(driver);
     }
 
